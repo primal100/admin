@@ -147,6 +147,7 @@ describe('<InputGuesser />', () => {
     ).toHaveLength(1);
     const titleField = screen.getByLabelText('resources.users.fields.title');
     expect(titleField).toHaveValue('Title');
+    expect(titleField).toHaveAttribute('type', 'text');
 
     expect(
       await screen.findAllByText('resources.users.fields.password'),
@@ -164,6 +165,8 @@ describe('<InputGuesser />', () => {
       'resources.users.fields.description',
     );
     expect(descriptionField).toHaveValue('Lorem ipsum dolor sit amet');
+    expect(descriptionField).toHaveAttribute('type', 'text');
+
     expect(
       await screen.findAllByText('resources.users.fields.nullText'),
     ).toHaveLength(1);
@@ -171,6 +174,7 @@ describe('<InputGuesser />', () => {
       'resources.users.fields.nullText',
     );
     expect(nullTextField).toHaveValue('');
+    expect(nullTextField).toHaveAttribute('type', 'text');
 
     await user.type(titleField, ' Foo');
     expect(titleField).toHaveValue('Title Foo');

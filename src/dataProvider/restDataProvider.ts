@@ -1,9 +1,80 @@
 import { stringify } from 'query-string';
 import { fetchUtils } from 'react-admin';
 import type { CreateResult, DataProvider } from 'react-admin';
+import lodashIsPlainObject from 'lodash.isplainobject';
 import { removeTrailingSlash } from '../removeTrailingSlash.js';
 
 // Based on https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.ts
+
+const isPlainObject = (value: any): value is object =>
+  lodashIsPlainObject(value);
+
+const formatData = (jsonData: Record<string, unknown>) => {
+  let extraInformation: { hasFileField?: boolean } = {};
+  if ('extraInformation' in jsonData) {
+    if (jsonData.extraInformation) {
+      extraInformation = jsonData.extraInformation;
+      delete jsonData.extraInformation;
+    }
+  }
+
+  const values = Object.values(jsonData);
+
+  const containFile = (element: unknown): boolean =>
+    Array.isArray(element)
+      ? element.length > 0 && element.every((value) => containFile(value))
+      : isPlainObject(element) &&
+        Object.values(element as Record<string, unknown>).some(
+          (value) => value instanceof File,
+        );
+
+  type ToJSONObject = { toJSON(): string };
+  const hasToJSON = (
+    element: string | ToJSONObject,
+  ): element is ToJSONObject =>
+    !!element &&
+    typeof element !== 'string' &&
+    typeof element.toJSON === 'function';
+
+  if (
+    !extraInformation.hasFileField &&
+    !values.some((value) => containFile(value))
+  ) {
+    return JSON.stringify(jsonData);
+  }
+
+  const body = new FormData();
+  Object.entries<string | ToJSONObject>(
+    jsonData as Record<string, string | ToJSONObject>,
+  ).forEach(([key, value]) => {
+    // React-Admin FileInput format is an object containing a file.
+    if (containFile(value)) {
+      const findFile = (element: string | ToJSONObject): Blob =>
+        Object.values(element).find((val) => val instanceof File);
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      Array.isArray(value)
+        ? value
+            .map((val) => findFile(val))
+            .forEach((file) => {
+              body.append(key.endsWith('[]') ? key : `${key}[]`, file);
+            })
+        : body.append(key, findFile(value));
+
+      return;
+    }
+    if (hasToJSON(value)) {
+      body.append(key, value.toJSON());
+      return;
+    }
+    if (isPlainObject(value) || Array.isArray(value)) {
+      body.append(key, JSON.stringify(value));
+      return;
+    }
+    body.append(key, value);
+  });
+
+  return body;
+};
 
 export default (
   entrypoint: string,
@@ -98,7 +169,7 @@ export default (
       }`;
       const { json } = await httpClient(url, {
         method: 'PUT',
-        body: JSON.stringify(params.data),
+        body: formatData(params.data),
       });
 
       return {
@@ -115,7 +186,7 @@ export default (
 
           return httpClient(url, {
             method: 'PUT',
-            body: JSON.stringify(params.data),
+            body: formatData(params.data),
           });
         }),
       );
@@ -127,7 +198,7 @@ export default (
       const url = `${removeTrailingSlash(apiUrl.toString())}/${resource}`;
       const { json } = await httpClient(url, {
         method: 'POST',
-        body: JSON.stringify(params.data),
+        body: formatData(params.data),
       });
 
       const result: CreateResult = {
