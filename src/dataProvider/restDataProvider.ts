@@ -6,14 +6,14 @@ import { removeTrailingSlash } from '../removeTrailingSlash.js';
 
 // Based on https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.ts
 
-
-const formatData = (jsonData: Record<string, unknown>) => {
+const formatData = (data: Record<string, unknown>) => {
+  const jsonData = data;
   let extraInformation: { hasFileField?: boolean } = {};
   if ('extraInformation' in jsonData) {
     if (jsonData.extraInformation) {
       extraInformation = jsonData.extraInformation;
-      delete jsonData.extraInformation;
     }
+    delete jsonData.extraInformation;
   }
 
   const values = Object.values(jsonData);
