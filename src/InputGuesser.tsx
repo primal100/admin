@@ -108,7 +108,6 @@ export const IntrospectedInputGuesser = ({
   let format;
   let parse;
   const fieldType = schemaAnalyzer.getFieldType(field);
-
   if (field.enum) {
     const choices = Object.entries(field.enum).map(([k, v]) => ({
       id: v,

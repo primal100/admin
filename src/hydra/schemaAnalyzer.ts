@@ -42,6 +42,8 @@ const getFieldType = (field: Field) => {
       return 'email';
     case 'http://schema.org/url':
       return 'url';
+    case 'http://schema.org/password':
+      return 'password';
     default:
   }
 
