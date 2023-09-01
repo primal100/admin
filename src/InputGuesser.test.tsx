@@ -151,7 +151,9 @@ describe('<InputGuesser />', () => {
     expect(
       await screen.findAllByText('resources.users.fields.password'),
     ).toHaveLength(1);
-    const passwordField = screen.getByLabelText('resources.users.fields.password *');
+    const passwordField = screen.getByLabelText(
+      'resources.users.fields.password *',
+    );
     expect(passwordField).toHaveValue('abcd1234');
     expect(passwordField).toHaveAttribute('type', 'password');
 
