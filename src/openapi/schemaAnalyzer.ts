@@ -36,7 +36,7 @@ const getFieldType = (field: Field) => {
     case 'base64Binary':
     case 'uuid':
     case 'password':
-      return 'text';
+      return 'password';
     case 'integer':
     case 'negativeInteger':
     case 'nonNegativeInteger':

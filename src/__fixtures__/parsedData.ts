@@ -25,6 +25,13 @@ export const API_FIELDS_DATA = [
     embedded: null,
     required: false,
   }),
+  new Field('password', {
+    id: 'http://schema.org/password',
+    range: 'http://www.w3.org/2001/XMLSchema#string',
+    reference: null,
+    embedded: null,
+    required: true,
+  }),
   new Field('fieldA', {
     id: 'http://schema.org/fieldA',
     range: 'http://www.w3.org/2001/XMLSchema#string',

@@ -38,6 +38,7 @@ const dataProvider: ApiPlatformAdminDataProvider = {
     Promise.resolve({
       data: {
         id: '/users/123',
+        password: 'abcd1234',
         fieldA: 'fieldA value',
         fieldB: 'fieldB value',
         deprecatedField: 'deprecatedField value',
@@ -131,6 +132,7 @@ describe('<InputGuesser />', () => {
                   updatedData = data;
                 }}>
                 <InputGuesser source="title" />
+                <InputGuesser source="password" />
                 <InputGuesser source="description" />
                 <InputGuesser source="nullText" />
               </SimpleForm>
@@ -145,6 +147,16 @@ describe('<InputGuesser />', () => {
     ).toHaveLength(1);
     const titleField = screen.getByLabelText('resources.users.fields.title');
     expect(titleField).toHaveValue('Title');
+
+    expect(
+      await screen.findAllByText('resources.users.fields.password'),
+    ).toHaveLength(1);
+    const passwordField = screen.getByLabelText(
+      'resources.users.fields.password *',
+    );
+    expect(passwordField).toHaveValue('abcd1234');
+    expect(passwordField).toHaveAttribute('type', 'password');
+
     expect(
       await screen.findAllByText('resources.users.fields.description'),
     ).toHaveLength(1);
