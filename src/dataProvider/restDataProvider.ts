@@ -6,8 +6,6 @@ import { removeTrailingSlash } from '../removeTrailingSlash.js';
 
 // Based on https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.ts
 
-const isPlainObject = (value: any): value is object =>
-  lodashIsPlainObject(value);
 
 const formatData = (jsonData: Record<string, unknown>) => {
   let extraInformation: { hasFileField?: boolean } = {};
@@ -23,15 +21,13 @@ const formatData = (jsonData: Record<string, unknown>) => {
   const containFile = (element: unknown): boolean =>
     Array.isArray(element)
       ? element.length > 0 && element.every((value) => containFile(value))
-      : isPlainObject(element) &&
+      : lodashIsPlainObject(element) &&
         Object.values(element as Record<string, unknown>).some(
           (value) => value instanceof File,
         );
 
   type ToJSONObject = { toJSON(): string };
-  const hasToJSON = (
-    element: string | ToJSONObject,
-  ): element is ToJSONObject =>
+  const hasToJSON = (element: string | ToJSONObject): element is ToJSONObject =>
     !!element &&
     typeof element !== 'string' &&
     typeof element.toJSON === 'function';
@@ -66,7 +62,7 @@ const formatData = (jsonData: Record<string, unknown>) => {
       body.append(key, value.toJSON());
       return;
     }
-    if (isPlainObject(value) || Array.isArray(value)) {
+    if (lodashIsPlainObject(value) || Array.isArray(value)) {
       body.append(key, JSON.stringify(value));
       return;
     }
