@@ -176,6 +176,7 @@ export const IntrospectedEditGuesser = ({
     },
     [
       fields,
+      fieldNames,
       hasFileField,
       id,
       mutationOptions,
