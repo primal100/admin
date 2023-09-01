@@ -77,6 +77,8 @@ export const IntrospectedEditGuesser = ({
   const displayOverrideCode = useDisplayOverrideCode();
 
   let inputChildren = React.Children.toArray(children);
+  const fieldNames = writableFields.map((field) => field.name);
+
   if (inputChildren.length === 0) {
     inputChildren = writableFields.map((field) => (
       <InputGuesser key={field.name} source={field.name} />
@@ -99,12 +101,14 @@ export const IntrospectedEditGuesser = ({
       if (id === undefined) {
         return undefined;
       }
-      let data = values;
+      let data = Object.fromEntries(
+        Object.entries(values).filter(([key]) => fieldNames.includes(key)),
+      );
       if (transform) {
-        data = transform(values);
+        data = transform(data);
       }
       // Identifiers need to be formatted in case they have not been modified in the form.
-      Object.entries(values).forEach(([key, value]) => {
+      Object.entries(data).forEach(([key, value]) => {
         const identifierValue = getIdentifierValue(
           schemaAnalyzer,
           resource,

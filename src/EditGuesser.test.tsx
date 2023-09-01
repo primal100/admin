@@ -48,7 +48,9 @@ const dataProvider: ApiPlatformAdminDataProvider = {
           new Resource('users', '/users', {
             fields: API_FIELDS_DATA,
             readableFields: API_FIELDS_DATA,
-            writableFields: API_FIELDS_DATA,
+            writableFields: API_FIELDS_DATA.filter(
+              (field) => field.id && !field.id.includes('id'),
+            ),
             parameters: [],
           }),
         ],
@@ -70,10 +72,7 @@ describe('<EditGuesser />', () => {
 
     await waitFor(() => {
       expect(screen.queryAllByRole('tab')).toHaveLength(0);
-      expect(screen.queryByText('resources.users.fields.id')).toBeVisible();
-      expect(screen.queryByLabelText('resources.users.fields.id')).toHaveValue(
-        123,
-      );
+      expect(screen.queryByText('resources.users.fields.id')).toBeNull();
       expect(screen.queryByText('resources.users.fields.fieldA')).toBeVisible();
       expect(
         screen.queryByLabelText('resources.users.fields.fieldA *'),
@@ -100,7 +99,6 @@ describe('<EditGuesser />', () => {
       <AdminContext dataProvider={dataProvider}>
         <SchemaAnalyzerContext.Provider value={hydraSchemaAnalyzer}>
           <EditGuesser resource="users" id="/users/123">
-            <TextInput source="id" label="label of id" />
             <TextInput source="title" label="label of title" />
             <TextInput source="body" label="label of body" />
           </EditGuesser>
@@ -110,8 +108,7 @@ describe('<EditGuesser />', () => {
 
     await waitFor(() => {
       expect(screen.queryAllByRole('tab')).toHaveLength(0);
-      expect(screen.queryByText('label of id')).toBeVisible();
-      expect(screen.queryByLabelText('label of id')).toHaveValue('/users/123');
+      expect(screen.queryByText('label of id')).toBeNull();
       expect(screen.queryByText('label of title')).toBeVisible();
       expect(screen.queryByLabelText('label of title')).toHaveValue('Title');
       expect(screen.queryByText('label of body')).toBeVisible();
