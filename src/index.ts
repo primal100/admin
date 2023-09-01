@@ -11,6 +11,7 @@ import ShowGuesser from './ShowGuesser.js';
 import useIntrospect from './useIntrospect.js';
 import useIntrospection from './useIntrospection.js';
 import useMercureSubscription from './useMercureSubscription.js';
+import { restDataProvider } from './dataProvider/index.js';
 
 export {
   AdminGuesser,
@@ -26,6 +27,7 @@ export {
   useIntrospect,
   useIntrospection,
   useMercureSubscription,
+  restDataProvider,
 };
 export {
   HydraAdmin,
