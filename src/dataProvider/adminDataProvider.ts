@@ -1,4 +1,4 @@
-import type { Api, Resource } from '@api-platform/api-doc-parser';
+import type { Api, Resource } from 'openapi-doc-parser';
 import { mercureManager } from '../mercure/index.js';
 import type {
   ApiDocumentationParserResponse,

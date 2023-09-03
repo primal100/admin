@@ -1,4 +1,4 @@
-import type { Field } from '@api-platform/api-doc-parser';
+import type { Field } from 'openapi-doc-parser';
 import type { SchemaAnalyzer } from './types.js';
 
 export const isIdentifier = (field: Field, fieldType: string) =>

@@ -10,7 +10,7 @@ import {
   useResourceDefinition,
 } from 'react-admin';
 import type { DatagridBodyProps } from 'react-admin';
-import type { Field, Resource } from '@api-platform/api-doc-parser';
+import type { Field, Resource } from 'openapi-doc-parser';
 
 import FieldGuesser from './FieldGuesser.js';
 import FilterGuesser from './FilterGuesser.js';

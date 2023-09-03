@@ -13,7 +13,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import type { FallbackProps } from 'react-error-boundary';
 import type { ComponentType, ErrorInfo } from 'react';
 import type { AdminProps, ErrorProps } from 'react-admin';
-import type { Resource } from '@api-platform/api-doc-parser';
+import type { Resource } from 'openapi-doc-parser';
 
 import IntrospectionContext from './IntrospectionContext.js';
 import ResourceGuesser from './ResourceGuesser.js';
@@ -60,7 +60,7 @@ const getOverrideCode = (resources: Resource[]) => {
 };
 
 /**
- * AdminResourcesGuesser automatically renders an `<AdminUI>` component for resources exposed by a web API documented with Hydra, OpenAPI or any other format supported by `@api-platform/api-doc-parser`.
+ * AdminResourcesGuesser automatically renders an `<AdminUI>` component for resources exposed by a web API documented with Hydra, OpenAPI or any other format supported by `openapi-doc-parser`.
  * If child components are passed (usually `<ResourceGuesser>` or `<Resource>` components, but it can be any other React component), they are rendered in the given order.
  * If no children are passed, a `<ResourceGuesser>` component is created for each resource type exposed by the API, in the order they are specified in the API documentation.
  */

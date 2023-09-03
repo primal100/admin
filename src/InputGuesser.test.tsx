@@ -5,7 +5,7 @@ import {
   ResourceContextProvider,
   SimpleForm,
 } from 'react-admin';
-import { Resource } from '@api-platform/api-doc-parser';
+import { Resource } from 'openapi-doc-parser';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 

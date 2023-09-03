@@ -2,7 +2,7 @@ import { HttpError } from 'react-admin';
 import {
   fetchJsonLd,
   getDocumentationUrlFromHeaders,
-} from '@api-platform/api-doc-parser';
+} from 'openapi-doc-parser';
 import jsonld from 'jsonld';
 import type { NodeObject } from 'jsonld';
 import type { JsonLdObj } from 'jsonld/jsonld-spec';

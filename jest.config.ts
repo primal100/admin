@@ -4,7 +4,7 @@ const config: JestConfigWithTsJest = {
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
   setupFilesAfterEnv: ['./jest.setup.ts'],
   testEnvironment: 'jsdom',
-  testPathIgnorePatterns: ['/lib/'],
+  testPathIgnorePatterns: ['/lib/', '/.yalc/'],
   maxWorkers: 1,
   moduleNameMapper: {
     '^(\\.{1,2}/.*/llhttp\\.wasm\\.js)$': '$1',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { AdminContext, Show } from 'react-admin';
-import { Resource } from '@api-platform/api-doc-parser';
+import { Resource } from 'openapi-doc-parser';
 import { render, screen, waitFor } from '@testing-library/react';
 
 import FieldGuesser from './FieldGuesser.js';

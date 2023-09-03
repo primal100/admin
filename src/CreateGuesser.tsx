@@ -13,7 +13,7 @@ import {
   useResourceContext,
 } from 'react-admin';
 import type { HttpError, RaRecord } from 'react-admin';
-import type { Field, Resource } from '@api-platform/api-doc-parser';
+import type { Field, Resource } from 'openapi-doc-parser';
 
 import InputGuesser from './InputGuesser.js';
 import Introspecter from './Introspecter.js';

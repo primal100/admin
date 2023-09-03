@@ -1,4 +1,4 @@
-import type { Field, Resource } from '@api-platform/api-doc-parser';
+import type { Field, Resource } from 'openapi-doc-parser';
 import type { HttpError } from 'react-admin';
 import type { JsonLdObj } from 'jsonld/jsonld-spec';
 import {

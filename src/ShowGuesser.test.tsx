@@ -5,7 +5,7 @@ import {
   Tab,
   TextField,
 } from 'react-admin';
-import { Resource } from '@api-platform/api-doc-parser';
+import { Resource } from 'openapi-doc-parser';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 

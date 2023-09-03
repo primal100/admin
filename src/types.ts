@@ -58,7 +58,7 @@ import type {
   UpdateResult,
   UrlFieldProps,
 } from 'react-admin';
-import type { Api, Field, Resource } from '@api-platform/api-doc-parser';
+import type { Api, Field, Resource } from 'openapi-doc-parser';
 import type { SxProps } from '@mui/system';
 
 type PickRename<T, K extends keyof T, R extends PropertyKey> = {

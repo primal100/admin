@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import { Response } from 'node-fetch';
-import type { parseHydraDocumentation } from '@api-platform/api-doc-parser';
+import type { parseHydraDocumentation } from 'openapi-doc-parser';
 import dataProviderFactory, {
   transformJsonLdDocumentToReactAdminDocument,
 } from './dataProvider.js';

@@ -7,9 +7,9 @@ import {
   UPDATE,
 } from 'react-admin';
 import lodashIsPlainObject from 'lodash.isplainobject';
-import { parseHydraDocumentation } from '@api-platform/api-doc-parser';
+import { parseHydraDocumentation } from 'openapi-doc-parser';
 import type { JsonLdObj } from 'jsonld/jsonld-spec';
-import type { Api, Field, Resource } from '@api-platform/api-doc-parser';
+import type { Api, Field, Resource } from 'openapi-doc-parser';
 import type {
   CreateParams,
   DataProviderResult,

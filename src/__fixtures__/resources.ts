@@ -1,4 +1,4 @@
-import type { Resource } from '@api-platform/api-doc-parser';
+import type { Resource } from 'openapi-doc-parser';
 
 const resources: Resource[] = [
   {

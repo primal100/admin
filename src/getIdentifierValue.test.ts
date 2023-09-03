@@ -1,4 +1,4 @@
-import { Field } from '@api-platform/api-doc-parser';
+import { Field } from 'openapi-doc-parser';
 import getIdentifierValue from './getIdentifierValue.js';
 import {
   getFiltersParametersFromSchema,
