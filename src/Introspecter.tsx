@@ -17,6 +17,7 @@ const ResourcesIntrospecter = ({
   resources,
   loading,
   error,
+  overrideCreateList = false,
   ...rest
 }: ResourcesIntrospecterProps) => {
   if (loading) {
@@ -46,12 +47,22 @@ const ResourcesIntrospecter = ({
   const fields = includeDeprecated
     ? schema.fields
     : schema.fields.filter(({ deprecated }) => !deprecated);
-  const readableFields = includeDeprecated
-    ? schema.readableFields
-    : schema.readableFields.filter(({ deprecated }) => !deprecated);
-  const writableFields = includeDeprecated
-    ? schema.writableFields
-    : schema.writableFields.filter(({ deprecated }) => !deprecated);
+
+  let readableFields =
+    overrideCreateList && schema.listFields
+      ? schema.listFields
+      : schema.readableFields;
+  let writableFields =
+    overrideCreateList && schema.createFields
+      ? schema.createFields
+      : schema.writableFields;
+
+  readableFields = includeDeprecated
+    ? readableFields
+    : readableFields.filter(({ deprecated }) => !deprecated);
+  writableFields = includeDeprecated
+    ? writableFields
+    : writableFields.filter(({ deprecated }) => !deprecated);
 
   return (
     <Component
@@ -137,6 +148,7 @@ const Introspecter = ({
 Introspecter.propTypes = {
   component: PropTypes.elementType.isRequired,
   includeDeprecated: PropTypes.bool,
+  overrideCreateList: PropTypes.bool,
   resource: PropTypes.string,
 };
 

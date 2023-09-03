@@ -2,6 +2,7 @@ import { stringify } from 'query-string';
 import { fetchUtils } from 'react-admin';
 import type { CreateResult, DataProvider } from 'react-admin';
 import lodashIsPlainObject from 'lodash.isplainobject';
+import type { GetListParams } from 'react-admin';
 import { removeTrailingSlash } from '../removeTrailingSlash.js';
 
 // Based on https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.ts
@@ -72,25 +73,34 @@ const formatData = (data: Record<string, unknown>) => {
   return body;
 };
 
+const defaultCompileQuery = (
+  params: GetListParams,
+  rangeStart: number,
+  rangeEnd: number,
+) => {
+  const { field, order } = params.sort;
+  return {
+    sort: JSON.stringify([field, order]),
+    range: JSON.stringify([rangeStart, rangeEnd]),
+    filter: JSON.stringify(params.filter),
+  };
+};
+
 export default (
   entrypoint: string,
   httpClient = fetchUtils.fetchJson,
+  compileQuery = defaultCompileQuery,
 ): DataProvider => {
   const apiUrl = new URL(entrypoint, window.location.href);
 
   return {
     getList: async (resource, params) => {
       const { page, perPage } = params.pagination;
-      const { field, order } = params.sort;
 
       const rangeStart = (page - 1) * perPage;
       const rangeEnd = page * perPage - 1;
 
-      const query = {
-        sort: JSON.stringify([field, order]),
-        range: JSON.stringify([rangeStart, rangeEnd]),
-        filter: JSON.stringify(params.filter),
-      };
+      const query = compileQuery(params, rangeStart, rangeEnd);
       const url = `${removeTrailingSlash(
         apiUrl.toString(),
       )}/${resource}?${stringify(query)}`;

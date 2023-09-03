@@ -351,6 +351,7 @@ export interface ResourcesIntrospecterProps {
   resources: Resource[];
   loading: boolean;
   error: Error | null;
+  overrideCreateList?: boolean;
 }
 
 type BaseIntrospecterProps = Pick<

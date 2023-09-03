@@ -47,7 +47,7 @@ export const IntrospectedInputGuesser = ({
   transformEnum,
   ...props
 }: IntrospectedInputGuesserProps) => {
-  const field = fields.find(({ name }) => name === props.source);
+  const field = writableFields.find(({ name }) => name === props.source);
   if (!field) {
     // eslint-disable-next-line no-console
     console.error(
@@ -133,7 +133,7 @@ export const IntrospectedInputGuesser = ({
       getIdentifierValue(
         schemaAnalyzer,
         props.resource,
-        fields,
+        writableFields,
         field.name,
         value,
       );

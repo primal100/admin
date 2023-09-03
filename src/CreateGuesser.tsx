@@ -185,6 +185,7 @@ const CreateGuesser = (props: CreateGuesserProps) => {
     <Introspecter
       component={IntrospectedCreateGuesser}
       resource={resource}
+      overrideCreateList
       {...props}
     />
   );

@@ -144,6 +144,7 @@ const ListGuesser = ({
       component={IntrospectedListGuesser}
       resource={resource}
       filters={filters}
+      overrideCreateList
       {...props}
     />
   );
