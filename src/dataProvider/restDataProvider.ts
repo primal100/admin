@@ -1,8 +1,7 @@
 import { stringify } from 'query-string';
 import { fetchUtils } from 'react-admin';
-import type { CreateResult, DataProvider } from 'react-admin';
+import type { CreateResult, DataProvider, GetListParams } from 'react-admin';
 import lodashIsPlainObject from 'lodash.isplainobject';
-import type { GetListParams } from 'react-admin';
 import { removeTrailingSlash } from '../removeTrailingSlash.js';
 
 // Based on https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.ts
