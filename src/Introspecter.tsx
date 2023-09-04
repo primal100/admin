@@ -49,11 +49,11 @@ const ResourcesIntrospecter = ({
     : schema.fields.filter(({ deprecated }) => !deprecated);
 
   let readableFields =
-    overrideCreateList && schema.listFields
+    overrideCreateList && schema.listFields && schema.listFields.length > 0
       ? schema.listFields
       : schema.readableFields;
   let writableFields =
-    overrideCreateList && schema.createFields
+    overrideCreateList && schema.createFields && schema.createFields.length > 0
       ? schema.createFields
       : schema.writableFields;
 
