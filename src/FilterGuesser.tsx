@@ -41,6 +41,7 @@ export const IntrospectedFilterGuesser = ({
           key={filter.name}
           source={filter.name}
           alwaysOn={filter.isRequired}
+          overrideFilterFields
         />
       ))}
     </Filter>

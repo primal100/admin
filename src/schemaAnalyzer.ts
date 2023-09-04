@@ -17,6 +17,7 @@ export const resolveSchemaParameters = (schema: Resource) => {
 };
 
 const ORDER_MARKER = 'order[';
+const NON_FILTER_MARKERS = ['order[', 'order_by', 'page_'];
 
 /**
  * @param schema The schema of a resource
@@ -65,7 +66,10 @@ export const getFiltersParametersFromSchema = (
         name: filter.variable,
         isRequired: filter.required,
       }))
-      .filter((filter) => !filter.name.includes(ORDER_MARKER))
+      .filter(
+        (filter) =>
+          !NON_FILTER_MARKERS.some((marker) => filter.name.includes(marker)),
+      )
       .filter((filter) => authorizedFields.includes(filter.name)),
   );
 };
