@@ -17,7 +17,7 @@ export const resolveSchemaParameters = (schema: Resource) => {
 };
 
 const ORDER_MARKER = 'order[';
-const NON_FILTER_MARKERS = ['order[', 'order_by', 'page_'];
+const NON_FILTER_MARKERS = [ORDER_MARKER, 'order_by', 'page_'];
 
 /**
  * @param schema The schema of a resource
@@ -27,24 +27,14 @@ const NON_FILTER_MARKERS = ['order[', 'order_by', 'page_'];
 export const getOrderParametersFromSchema = (
   schema: Resource,
 ): Promise<string[]> => {
-  if (!schema.fields) {
+  if (!schema.listFields && !schema.readableFields) {
     return Promise.resolve([]);
   }
 
-  const authorizedFields = schema.fields.map((field) => field.name);
-  return resolveSchemaParameters(schema).then((parameters) =>
-    parameters
-      .map((filter) => filter.variable)
-      .filter((filter) => filter.includes(ORDER_MARKER))
-      .map((orderFilter) =>
-        orderFilter.replace(ORDER_MARKER, '').replace(']', ''),
-      )
-      .filter((filter) =>
-        authorizedFields.includes(
-          filter.split('.')[0] ?? '', // split to manage nested properties
-        ),
-      ),
-  );
+  const authorizedFields =
+    (schema.listFields ?? schema.readableFields)?.map((field) => field.name) ??
+    [];
+  return Promise.resolve(authorizedFields);
 };
 
 /**
