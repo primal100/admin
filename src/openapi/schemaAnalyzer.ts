@@ -15,10 +15,32 @@ const getFieldNameFromSchema = (schema: Resource) => {
     return '';
   }
 
-  if (schema.fields.find((schemaField) => schemaField.name === 'id')) {
-    return 'id';
-  }
+  // If "string repr" is found in field description use that field
 
+  let field = schema.fields.find((schemaField) =>
+    schemaField.description?.toLowerCase().includes('string repr'),
+  );
+  if (field) return field.name;
+
+  // Use field name?
+  field = schema.fields.find((schemaField) => schemaField.name === 'name');
+  if (field) return field.name;
+
+  // Use field which includes name?
+  field = schema.fields.find((schemaField) =>
+    schemaField.name.includes('name'),
+  );
+  if (field) return field.name;
+
+  // Look for a string field to use?
+  field = schema.fields.find((schemaField) => schemaField.type === 'string');
+  if (field) return field.name;
+
+  // Use field id
+  field = schema.fields.find((schemaField) => schemaField.name === 'id');
+  if (field) return field.name;
+
+  // Use first field
   return schema.fields[0].name;
 };
 
