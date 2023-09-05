@@ -1,6 +1,6 @@
 import { stringify } from 'query-string';
 import { fetchUtils } from 'react-admin';
-import type { CreateResult, DataProvider, GetListParams } from 'react-admin';
+import type { CreateResult, DataProvider } from 'react-admin';
 import lodashIsPlainObject from 'lodash.isplainobject';
 import { removeTrailingSlash } from '../removeTrailingSlash.js';
 
@@ -73,33 +73,50 @@ const formatData = (data: Record<string, unknown>) => {
 };
 
 const defaultCompileQuery = (
-  params: GetListParams,
-  rangeStart: number,
-  rangeEnd: number,
-) => {
-  const { field, order } = params.sort;
-  return {
-    sort: JSON.stringify([field, order]),
-    range: JSON.stringify([rangeStart, rangeEnd]),
-    filter: JSON.stringify(params.filter),
+  filters: any,
+  orderField?: string,
+  direction?: string,
+  rangeStart?: number,
+  rangeEnd?: number,
+): Record<string, any> => {
+  const queryObject: Record<string, any> = {
+    filter: JSON.stringify(filters),
   };
+
+  if (orderField && direction) {
+    queryObject.sort = JSON.stringify([orderField, direction]);
+  }
+
+  if (rangeStart && rangeEnd) {
+    queryObject.range = JSON.stringify([rangeStart, rangeEnd]);
+  }
+
+  return queryObject;
 };
 
 export default (
   entrypoint: string,
   httpClient = fetchUtils.fetchJson,
-  compileQuery = defaultCompileQuery,
+  compileListQuery = defaultCompileQuery,
 ): DataProvider => {
   const apiUrl = new URL(entrypoint, window.location.href);
 
   return {
     getList: async (resource, params) => {
       const { page, perPage } = params.pagination;
+      const { field, order } = params.sort;
 
       const rangeStart = (page - 1) * perPage;
       const rangeEnd = page * perPage - 1;
 
-      const query = compileQuery(params, rangeStart, rangeEnd);
+      const query = compileListQuery(
+        params.filter,
+        field,
+        order,
+        rangeStart,
+        rangeEnd,
+      );
+
       const url = `${removeTrailingSlash(
         apiUrl.toString(),
       )}/${resource}?${stringify(query)}`;
@@ -126,9 +143,9 @@ export default (
     },
 
     getMany: async (resource, params) => {
-      const query = {
-        filter: JSON.stringify({ id: params.ids }),
-      };
+      const query = compileListQuery(
+        { id: params.ids }
+      );
       const url = `${removeTrailingSlash(
         apiUrl.toString(),
       )}/${resource}?${stringify(query)}`;
@@ -146,14 +163,17 @@ export default (
       const rangeStart = (page - 1) * perPage;
       const rangeEnd = page * perPage - 1;
 
-      const query = {
-        sort: JSON.stringify([field, order]),
-        range: JSON.stringify([rangeStart, rangeEnd]),
-        filter: JSON.stringify({
+      const query = compileListQuery(
+        {
           ...params.filter,
           [params.target]: params.id,
-        }),
-      };
+        },
+        field,
+        order,
+        rangeStart,
+        rangeEnd,
+      );
+
       const url = `${removeTrailingSlash(
         apiUrl.toString(),
       )}/${resource}?${stringify(query)}`;
