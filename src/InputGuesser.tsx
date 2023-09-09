@@ -20,6 +20,7 @@ import {
   regex,
   required,
   useResourceContext,
+  email,
 } from 'react-admin';
 import type {
   ArrayInputProps,
@@ -41,11 +42,6 @@ import type {
   InputGuesserProps,
   IntrospectedInputGuesserProps,
 } from './types.js';
-
-const typeMap: Record<string, string | undefined> = {
-  email: 'email',
-  url: 'url',
-};
 
 export const IntrospectedInputGuesser = ({
   fields,
@@ -282,6 +278,9 @@ export const IntrospectedInputGuesser = ({
         if (field.pattern) {
           guessedValidate.push(regex(field.pattern));
         }
+        if (field.type === 'email') {
+          guessedValidate.push(email());
+        }
       }
 
       return (
@@ -293,7 +292,6 @@ export const IntrospectedInputGuesser = ({
           parse={parseProp ?? parse}
           source={field.name}
           multiline={Boolean(field.multiline)}
-          type={typeMap[fieldType] ?? 'text'}
         />
       );
   }
