@@ -175,8 +175,7 @@ export const IntrospectedInputGuesser = ({
   }
 
   const { format: formatProp, parse: parseProp } = props;
-  const additionalNumberProps =
-        fieldType === 'float' ? { step: '0.1' } : {};
+  const additionalNumberProps = fieldType === 'float' ? { step: '0.1' } : {};
 
   switch (fieldType) {
     case 'array':
