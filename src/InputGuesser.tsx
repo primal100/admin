@@ -13,6 +13,12 @@ import {
   SelectInput,
   SimpleFormIterator,
   TextInput,
+  email,
+  maxLength,
+  maxValue,
+  minLength,
+  minValue,
+  regex,
   required,
   useResourceContext,
 } from 'react-admin';
@@ -57,7 +63,9 @@ export const IntrospectedInputGuesser = ({
     return null;
   }
 
-  const guessedValidate = !validate && field.required ? [required()] : validate;
+  const guessedValidate = validate ?? [];
+  if (!validate && Array.isArray(guessedValidate) && field.required)
+    guessedValidate.push(required());
 
   if (field.reference !== null && typeof field.reference === 'object') {
     if (field.maxCardinality === 1) {
@@ -167,6 +175,7 @@ export const IntrospectedInputGuesser = ({
   }
 
   const { format: formatProp, parse: parseProp } = props;
+  const additionalNumberProps = fieldType === 'float' ? { step: '0.1' } : {};
 
   switch (fieldType) {
     case 'array':
@@ -188,27 +197,24 @@ export const IntrospectedInputGuesser = ({
 
     case 'integer':
     case 'integer_id':
-      return (
-        <NumberInput
-          key={field.name}
-          validate={guessedValidate}
-          {...(props as NumberInputProps)}
-          format={formatProp ?? format}
-          parse={parseProp ?? parse}
-          source={field.name}
-        />
-      );
-
     case 'float':
+      if (!validate && Array.isArray(guessedValidate)) {
+        if (field.minimum) {
+          guessedValidate.push(minValue(field.minimum));
+        }
+        if (field.maximum) {
+          guessedValidate.push(maxValue(field.maximum));
+        }
+      }
       return (
         <NumberInput
           key={field.name}
-          step="0.1"
           validate={guessedValidate}
           {...(props as NumberInputProps)}
           format={formatProp ?? format}
           parse={parseProp ?? parse}
           source={field.name}
+          {...additionalNumberProps}
         />
       );
 
@@ -261,6 +267,21 @@ export const IntrospectedInputGuesser = ({
       );
 
     default:
+      if (!validate && Array.isArray(guessedValidate)) {
+        if (field.minLength) {
+          guessedValidate.push(minLength(field.minLength));
+        }
+        if (field.maxLength) {
+          guessedValidate.push(maxLength(field.maxLength));
+        }
+        if (field.pattern) {
+          guessedValidate.push(regex(field.pattern));
+        }
+        if (field.type === 'email') {
+          guessedValidate.push(email());
+        }
+      }
+
       return (
         <TextInput
           key={field.name}
@@ -269,6 +290,7 @@ export const IntrospectedInputGuesser = ({
           format={formatProp ?? format}
           parse={parseProp ?? parse}
           source={field.name}
+          multiline={Boolean(field.multiline)}
         />
       );
   }

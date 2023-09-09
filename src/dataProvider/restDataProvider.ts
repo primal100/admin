@@ -143,9 +143,7 @@ export default (
     },
 
     getMany: async (resource, params) => {
-      const query = compileListQuery(
-        { id: params.ids }
-      );
+      const query = compileListQuery({ id: params.ids });
       const url = `${removeTrailingSlash(
         apiUrl.toString(),
       )}/${resource}?${stringify(query)}`;
