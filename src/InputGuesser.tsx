@@ -13,6 +13,7 @@ import {
   SelectInput,
   SimpleFormIterator,
   TextInput,
+  email,
   maxLength,
   maxValue,
   minLength,
@@ -20,7 +21,6 @@ import {
   regex,
   required,
   useResourceContext,
-  email,
 } from 'react-admin';
 import type {
   ArrayInputProps,
@@ -175,6 +175,8 @@ export const IntrospectedInputGuesser = ({
   }
 
   const { format: formatProp, parse: parseProp } = props;
+  const additionalNumberProps =
+        fieldType === 'float' ? { step: '0.1' } : {};
 
   switch (fieldType) {
     case 'array':
@@ -205,8 +207,6 @@ export const IntrospectedInputGuesser = ({
           guessedValidate.push(maxValue(field.maximum));
         }
       }
-      const additionalNumberProps =
-        fieldType === 'float' ? { step: '0.1' } : {};
       return (
         <NumberInput
           key={field.name}
