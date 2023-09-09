@@ -23,7 +23,7 @@
     "lodash.isplainobject": "^4.0.6",
     "openapi-doc-parser": "^0.16.4",
     "prop-types": "^15.6.2",
-    "react-admin": "^4.13.3",
+    "react-admin": "^4.13.4",
     "react-error-boundary": "^3.1.0"
   },
   "devDependencies": {
