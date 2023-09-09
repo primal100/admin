@@ -50,6 +50,7 @@ const renderField = (
   field: Field,
   schemaAnalyzer: SchemaAnalyzer,
   props: FieldProps,
+  detailed = false,
 ) => {
   if (field.reference !== null && typeof field.reference === 'object') {
     if (field.maxCardinality === 1) {
@@ -119,8 +120,9 @@ const renderField = (
       return <BooleanField {...(props as BooleanFieldProps)} />;
 
     case 'date':
-    case 'dateTime':
       return <DateField {...(props as DateFieldProps)} />;
+    case 'dateTime':
+      return <DateField {...(props as DateFieldProps)} showTime={detailed} />;
 
     default:
       return <TextField {...(props as TextFieldProps)} />;
@@ -133,6 +135,7 @@ export const IntrospectedFieldGuesser = ({
   writableFields,
   schema,
   schemaAnalyzer,
+  detailed,
   ...props
 }: IntrospectedFieldGuesserProps) => {
   const field = fields.find((f) => f.name === props.source);
@@ -146,10 +149,15 @@ export const IntrospectedFieldGuesser = ({
     return null;
   }
 
-  return renderField(field, schemaAnalyzer, {
-    sortable: isFieldSortable(field, schema),
-    ...props,
-  });
+  return renderField(
+    field,
+    schemaAnalyzer,
+    {
+      sortable: isFieldSortable(field, schema),
+      ...props,
+    },
+    detailed,
+  );
 };
 
 const FieldGuesser = (props: FieldGuesserProps) => {

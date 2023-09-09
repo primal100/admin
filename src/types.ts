@@ -341,6 +341,7 @@ interface IntrospectedGuesserProps {
   fields: Field[];
   readableFields: Field[];
   writableFields: Field[];
+  detailed?: boolean;
 }
 
 export interface ResourcesIntrospecterProps {
@@ -469,7 +470,7 @@ export type IntrospectedFieldGuesserProps = FieldProps &
 export type FieldGuesserProps = Omit<
   FieldProps & Omit<BaseIntrospecterProps, 'resource'>,
   'component'
->;
+> & { detailed?: boolean };
 
 type InputProps =
   | TextInputProps
