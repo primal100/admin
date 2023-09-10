@@ -5,7 +5,6 @@ import {
   BooleanInput,
   DateInput,
   DateTimeInput,
-  InputProps,
   NumberInput,
   PasswordInput,
   ReferenceArrayInput,
@@ -28,6 +27,7 @@ import type {
   BooleanInputProps,
   DateInputProps,
   DateTimeInputProps,
+  InputProps,
   NumberInputProps,
   PasswordInputProps,
   ReferenceArrayInputProps,
@@ -202,7 +202,6 @@ export const IntrospectedInputGuesser = ({
               {...defaultValue}
             />
           </SimpleFormIterator>
-
         </ArrayInput>
       );
 
