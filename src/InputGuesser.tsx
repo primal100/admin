@@ -27,6 +27,7 @@ import type {
   BooleanInputProps,
   DateInputProps,
   DateTimeInputProps,
+  InputProps,
   NumberInputProps,
   PasswordInputProps,
   ReferenceArrayInputProps,
@@ -116,6 +117,13 @@ export const IntrospectedInputGuesser = ({
   let format;
   let parse;
   const fieldType = schemaAnalyzer.getFieldType(field);
+
+  const additionalNumberProps: Partial<NumberInputProps> =
+    fieldType === 'float' ? { step: '0.1' } : {};
+  const defaultValue: Partial<InputProps> = field.default
+    ? { defaultValue: field.default }
+    : {};
+
   if (field.enum) {
     const choices = Object.entries(field.enum).map(([k, v]) => ({
       id: v,
@@ -126,12 +134,14 @@ export const IntrospectedInputGuesser = ({
         validate={guessedValidate}
         choices={choices}
         {...(props as SelectArrayInputProps)}
+        {...defaultValue}
       />
     ) : (
       <SelectInput
         validate={guessedValidate}
         choices={choices}
         {...(props as SelectInputProps)}
+        {...defaultValue}
       />
     );
   }
@@ -175,7 +185,6 @@ export const IntrospectedInputGuesser = ({
   }
 
   const { format: formatProp, parse: parseProp } = props;
-  const additionalNumberProps = fieldType === 'float' ? { step: '0.1' } : {};
 
   switch (fieldType) {
     case 'array':
@@ -190,6 +199,7 @@ export const IntrospectedInputGuesser = ({
               source=""
               format={formatProp ?? format}
               parse={parseProp ?? parse}
+              {...defaultValue}
             />
           </SimpleFormIterator>
         </ArrayInput>
@@ -215,6 +225,7 @@ export const IntrospectedInputGuesser = ({
           parse={parseProp ?? parse}
           source={field.name}
           {...additionalNumberProps}
+          {...defaultValue}
         />
       );
 
@@ -227,6 +238,7 @@ export const IntrospectedInputGuesser = ({
           format={formatProp ?? format}
           parse={parseProp ?? parse}
           source={field.name}
+          {...defaultValue}
         />
       );
 
@@ -239,6 +251,7 @@ export const IntrospectedInputGuesser = ({
           format={formatProp ?? format}
           parse={parseProp ?? parse}
           source={field.name}
+          {...defaultValue}
         />
       );
 
@@ -251,6 +264,7 @@ export const IntrospectedInputGuesser = ({
           format={formatProp ?? format}
           parse={parseProp ?? parse}
           source={field.name}
+          {...defaultValue}
         />
       );
 
@@ -263,6 +277,7 @@ export const IntrospectedInputGuesser = ({
           format={formatProp ?? format}
           parse={parseProp ?? parse}
           source={field.name}
+          {...defaultValue}
         />
       );
 
@@ -291,6 +306,7 @@ export const IntrospectedInputGuesser = ({
           parse={parseProp ?? parse}
           source={field.name}
           multiline={Boolean(field.multiline)}
+          {...defaultValue}
         />
       );
   }
