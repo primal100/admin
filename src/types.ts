@@ -358,7 +358,7 @@ export interface ResourcesIntrospecterProps {
 
 type BaseIntrospecterProps = Pick<
   ResourcesIntrospecterProps,
-  'component' | 'resource' | 'overrideFilterFields'
+  'component' | 'resource' | 'overrideCreateList' | 'overrideFilterFields'
 > &
   Partial<Pick<ResourcesIntrospecterProps, 'includeDeprecated'>>;
 

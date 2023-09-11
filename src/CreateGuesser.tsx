@@ -71,7 +71,7 @@ export const IntrospectedCreateGuesser = ({
   let inputChildren = React.Children.toArray(children);
   if (inputChildren.length === 0) {
     inputChildren = writableFields.map((field) => (
-      <InputGuesser key={field.name} source={field.name} />
+      <InputGuesser key={field.name} source={field.name} overrideCreateList />
     ));
     displayOverrideCode(getOverrideCode(schema, writableFields));
   }

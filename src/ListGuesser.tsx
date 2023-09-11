@@ -102,6 +102,7 @@ export const IntrospectedListGuesser = ({
           sortable={!!orderField}
           sortBy={orderField}
           resource={props.resource}
+          overrideCreateList
         />
       );
     });
