@@ -5,6 +5,10 @@ import {
   BooleanInput,
   DateInput,
   DateTimeInput,
+  FileField,
+  FileInput,
+  ImageField,
+  ImageInput,
   NumberInput,
   PasswordInput,
   ReferenceArrayInput,
@@ -27,6 +31,8 @@ import type {
   BooleanInputProps,
   DateInputProps,
   DateTimeInputProps,
+  FileInputProps,
+  ImageInputProps,
   InputProps,
   NumberInputProps,
   PasswordInputProps,
@@ -43,6 +49,8 @@ import type {
   InputGuesserProps,
   IntrospectedInputGuesserProps,
 } from './types.js';
+
+const containsImageorPhotoRegex = /image|photo/i;
 
 export const IntrospectedInputGuesser = ({
   fields,
@@ -279,6 +287,37 @@ export const IntrospectedInputGuesser = ({
           source={field.name}
           {...defaultValue}
         />
+      );
+
+    case 'binary':
+      if (
+        field.description &&
+        containsImageorPhotoRegex.test(field.description)
+      ) {
+        return (
+          <ImageInput
+            key={field.name}
+            validate={guessedValidate}
+            {...(props as ImageInputProps)}
+            format={formatProp ?? format}
+            parse={parseProp ?? parse}
+            source={field.name}
+            {...defaultValue}>
+            <ImageField source="src" title="title" />
+          </ImageInput>
+        );
+      }
+      return (
+        <FileInput
+          key={field.name}
+          validate={guessedValidate}
+          {...(props as FileInputProps)}
+          format={formatProp ?? format}
+          parse={parseProp ?? parse}
+          source={field.name}
+          {...defaultValue}>
+          <FileField source="src" title="title" />
+        </FileInput>
       );
 
     default:

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   Edit,
   FileInput,
-  FormTab,
+  FormTab, ImageInput,
   SimpleForm,
   TabbedForm,
   useNotify,
@@ -90,6 +90,7 @@ export const IntrospectedEditGuesser = ({
       (child) =>
         React.isValidElement(child) &&
         (child.type === FileInput ||
+          child.type === ImageInput ||
           hasFileFieldElement(
             React.Children.toArray((child.props as PropsWithChildren).children),
           )),
