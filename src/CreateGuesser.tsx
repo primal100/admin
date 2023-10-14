@@ -5,6 +5,7 @@ import {
   Create,
   FileInput,
   FormTab,
+  ImageInput,
   SimpleForm,
   TabbedForm,
   useCreate,
@@ -81,6 +82,7 @@ export const IntrospectedCreateGuesser = ({
       (child) =>
         React.isValidElement(child) &&
         (child.type === FileInput ||
+          child.type === ImageInput ||
           hasFileFieldElement(
             React.Children.toArray((child.props as PropsWithChildren).children),
           )),

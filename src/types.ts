@@ -143,7 +143,8 @@ export interface SchemaAnalyzer {
     | 'date'
     | 'dateTime'
     | 'password'
-    | 'text';
+    | 'text'
+    | 'binary';
   getSubmissionErrors: (error: HttpError) => null | SubmissionErrors;
 }
 
