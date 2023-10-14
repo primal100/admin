@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import {
   Edit,
   FileInput,
-  FormTab, ImageInput,
+  FormTab,
+  ImageInput,
   SimpleForm,
   TabbedForm,
   useNotify,
