@@ -50,7 +50,7 @@ import type {
   IntrospectedInputGuesserProps,
 } from './types.js';
 
-const containsImageorPhotoRegex = /image|photo/i;
+export const containsImageorPhotoRegex = /image|photo/i;
 
 export const IntrospectedInputGuesser = ({
   fields,

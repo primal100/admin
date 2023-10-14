@@ -6,6 +6,8 @@ import {
   ChipField,
   DateField,
   EmailField,
+  FileField,
+  ImageField,
   NumberField,
   ReferenceArrayField,
   ReferenceField,
@@ -20,6 +22,8 @@ import type {
   BooleanFieldProps,
   DateFieldProps,
   EmailFieldProps,
+  FileFieldProps,
+  ImageFieldProps,
   NumberFieldProps,
   ReferenceArrayFieldProps,
   ReferenceFieldProps,
@@ -28,6 +32,7 @@ import type {
 } from 'react-admin';
 import type { Field, Resource } from 'openapi-doc-parser';
 
+import { containsImageorPhotoRegex } from './InputGuesser.js';
 import Introspecter from './Introspecter.js';
 import EnumField from './EnumField.js';
 import type {
@@ -45,6 +50,10 @@ const isFieldSortable = (field: Field, schema: Resource) =>
   schema.parameters.filter(
     (parameter) => parameter.variable === `order[${field.name}]`,
   ).length > 0;
+
+export const isImageFileUrl = /\bimage\b.*\burl\b|\burl\b.*\bimage\b/i;
+
+export const isFileUrlRegex = /\bfile\b.*\burl\b|\burl\b.*\bfile\b/i;
 
 const renderField = (
   field: Field,
@@ -123,8 +132,35 @@ const renderField = (
       return <DateField {...(props as DateFieldProps)} />;
     case 'dateTime':
       return <DateField {...(props as DateFieldProps)} showTime={detailed} />;
-
+    case 'binary':
+      if (
+        field.description &&
+        containsImageorPhotoRegex.test(field.description)
+      ) {
+        return (
+          <ImageField src="path" title="path" {...(props as ImageFieldProps)} />
+        );
+      }
+      return (
+        <FileField src="path" title="path" {...(props as FileFieldProps)} />
+      );
     default:
+      if (field.description) {
+        if (isImageFileUrl.test(field.description)) {
+          return (
+            <ImageField
+              src="path"
+              title="path"
+              {...(props as ImageFieldProps)}
+            />
+          );
+        }
+        if (isFileUrlRegex.test(field.description)) {
+          return (
+            <FileField src="path" title="path" {...(props as FileFieldProps)} />
+          );
+        }
+      }
       return <TextField {...(props as TextFieldProps)} />;
   }
 };

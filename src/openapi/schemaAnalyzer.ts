@@ -53,7 +53,6 @@ const getFieldType = (field: Field) => {
       return 'array';
     case 'string':
     case 'byte':
-    case 'binary':
     case 'hexBinary':
     case 'base64Binary':
     case 'uuid':
@@ -83,6 +82,8 @@ const getFieldType = (field: Field) => {
       return 'url';
     case 'password':
       return 'password';
+    case 'binary':
+      return 'binary';
     default:
       return 'text';
   }
